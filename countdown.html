@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <style>
+      #create-countdown-form > div {
+        margin: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <form id="create-countdown-form">
+      <div>Hours: <input type="text" id="hours" /></div>
+      <div>Minutes: <input type="text" id="minutes" /></div>
+      <div>Seconds: <input type="text" id="seconds" /></div>
+      <button id="start-countdown" type="button">Countdown</button>
+    </form>
+
+    <div class="timer">
+      <p id="timer-text"></p>
+    </div>
+
+    <script>
+      let intervalId = null;
+
+      document
+        .getElementById("start-countdown")
+        .addEventListener("click", function () {
+          const hours = parseInt(document.getElementById("hours").value);
+          const minutes = parseInt(document.getElementById("minutes").value);
+          const seconds = parseInt(document.getElementById("seconds").value);
+
+          if (
+            !Number.isInteger(hours) ||
+            !Number.isInteger(minutes) ||
+            !Number.isInteger(seconds)
+          ) {
+            alert("Please enter valid input");
+            return;
+          }
+
+          let totalSeconds = hours * 60 * 60 + minutes * 60 + seconds;
+
+          if (intervalId) {
+            clearInterval(intervalId);
+          }
+
+          intervalId = setInterval(function () {
+            document.getElementById("timer-text").innerHTML =
+              formatSeconds(totalSeconds);
+            totalSeconds = totalSeconds - 1;
+            if (totalSeconds < 0) {
+              clearInterval(intervalId);
+            }
+          }, 1000);
+        });
+
+      function formatSeconds(sec_num) {
+        var hours = Math.floor(sec_num / 3600);
+        var minutes = Math.floor((sec_num - hours * 3600) / 60);
+        var seconds = sec_num - hours * 3600 - minutes * 60;
+
+        if (hours < 10) {
+          hours = "0" + hours;
+        }
+        if (minutes < 10) {
+          minutes = "0" + minutes;
+        }
+        if (seconds < 10) {
+          seconds = "0" + seconds;
+        }
+        return hours + ":" + minutes + ":" + seconds;
+      }
+    </script>
+  </body>
+</html>
